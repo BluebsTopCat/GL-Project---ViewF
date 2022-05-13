@@ -13,7 +13,9 @@ public class NPC : MonoBehaviour
     private GameObject player;
     [Header("InteractDialogue")] 
     public string InterDialogue;
-    [Header("Trigger Dialogue")]
+
+    [Header("Trigger Dialogue")] 
+    public bool exit;
     public bool trigger;
     public BoxCollider bc;
     public string TriggerDialogue;
@@ -31,10 +33,21 @@ public class NPC : MonoBehaviour
 
     public string Interact()
     {
+        interacted = true;
         return(InterDialogue);
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (exit) return;
+        if (trigger && other.gameObject == player && (!interacted || !once)) 
+        {
+            interacted = true;
+            dr.StartDialogue(TriggerDialogue);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (!exit) return;
         if (trigger && other.gameObject == player && (!interacted || !once)) 
         {
             interacted = true;
