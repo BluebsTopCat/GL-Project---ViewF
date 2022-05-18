@@ -8,16 +8,22 @@ ModelImporter:
     second: PullUp
   - first:
       74: -4510409428667958191
-    second: Flip
+    second: Push
   - first:
       74: -4590039189748022572
-    second: Tap
+    second: Print
   - first:
       74: -4139258048557230014
     second: Putdown
   - first:
       74: 1624593205714598167
     second: Down
+  - first:
+      74: 3222998120386176991
+    second: Hold
+  - first:
+      74: 5241069792068555748
+    second: HoldDown
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -51,7 +57,7 @@ ModelImporter:
       takeName: Scene
       internalID: 0
       firstFrame: 1
-      lastFrame: 23
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -76,11 +82,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 1
     - serializedVersion: 16
-      name: Flip
+      name: Push
       takeName: Scene
       internalID: 0
-      firstFrame: 21
-      lastFrame: 38
+      firstFrame: 24
+      lastFrame: 36
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -105,11 +111,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 1
     - serializedVersion: 16
-      name: Tap
+      name: Print
       takeName: Scene
       internalID: 0
       firstFrame: 36
-      lastFrame: 51
+      lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -137,8 +143,8 @@ ModelImporter:
       name: Putdown
       takeName: Scene
       internalID: 0
-      firstFrame: 53
-      lastFrame: 70
+      firstFrame: 100
+      lastFrame: 110
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -163,7 +169,36 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 1
     - serializedVersion: 16
-      name: Down
+      name: Hold
+      takeName: Scene
+      internalID: 0
+      firstFrame: 24
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: HoldDown
       takeName: Scene
       internalID: 0
       firstFrame: 1
