@@ -9,6 +9,20 @@ using Yarn.Unity;
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
+    public enum Playerstate
+    {
+        Walking,
+        Photoing,
+        Talking
+    };
+    public Playerstate playerCurrently;
+    [Header("Camera")] 
+    public bool ineditor;
+    public bool incamera;
+    public GameObject cameraObject;
+    public GameObject cameracam;
+    public float playercammult;
+    public GameObject photocanvas;
 
     [Header("Dialogue")] 
     public bool indialogue;
@@ -58,13 +72,42 @@ public class Player : MonoBehaviour
     {
         indialogue = dr.IsDialogueRunning;
         //Check ground status
+        if (indialogue)
+        {
+            playerCurrently = Playerstate.Talking;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        else if (ineditor)
+        {
+            playerCurrently = Playerstate.Photoing;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        else
+        {
+            playerCurrently = Playerstate.Walking;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if (playerCurrently == Playerstate.Photoing)
+        {
+            Time.timeScale = 0;
+            rb.isKinematic = true;
+            return;
+        }
+
+        photocanvas.SetActive(false);
+        Time.timeScale = 1;
+        rb.isKinematic = false;
         inadjustrange = Physics.Raycast(transform.position, Vector3.down,out ground, groundheight * 1.25f, groundlm);
         grounded = Vector3.Distance(ground.point, transform.position) <= groundheight +.01f;
 
         if (grounded || rb.velocity.y <= 0)
             jumping = false;
 
-        if(indialogue){
+        
+        if(playerCurrently == Playerstate.Talking){
             jumping = false;
             if(Input.GetKeyDown(KeyCode.Space))
                 dui.MarkLineComplete();
@@ -73,14 +116,13 @@ public class Player : MonoBehaviour
             
             rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(0, 0f, 0),.5f);
             anim.SetFloat("Speed", 0);
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            cameraObject.SetActive(false);
             return;
         }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        
+        
+        
+        
         timefalling = grounded || (inadjustrange && !jumping) ? 0 : timefalling + Time.deltaTime;
         if (grounded || (inadjustrange && !jumping))
         {
@@ -103,6 +145,7 @@ public class Player : MonoBehaviour
         
         //Speed up player if sprinting
         inputs = sprinting ? inputs * sprintmultiplier : inputs;
+        inputs = incamera ? inputs * playercammult : inputs;
         Vector3 newvelocity = relativize(new Vector3(inputs.x * speed, rb.velocity.y, inputs.y * speed));
         rb.velocity = Vector3.Lerp(rb.velocity, newvelocity, !grounded || jumping ? .05f : .25f);
         
@@ -115,12 +158,27 @@ public class Player : MonoBehaviour
         Debug.DrawRay(cam.transform.position, cam.transform.forward);
         if (Input.GetKeyDown(KeyCode.E))
             Interact();
+        
+        
+        //Take out and put away camera, take photos, stuff.
+        CameraFunctions();
 
         //Show the player walking and all that
         Vector2 stuff = new Vector2(rb.velocity.x, rb.velocity.z);
         anim.SetFloat("Speed",  Mathf.Abs(stuff.magnitude/(speed * sprintmultiplier)));
 
     }
+
+    void CameraFunctions()
+    {
+        incamera = Input.GetMouseButton(1);
+        cameraObject.SetActive(incamera);
+        if (incamera && Input.GetMouseButtonDown(0))
+        {
+            ineditor = true;
+            photocanvas.SetActive(true);
+        }
+}
 
     void Interact()
     {

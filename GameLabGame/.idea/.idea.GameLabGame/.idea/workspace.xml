@@ -7,11 +7,14 @@
     <list default="true" id="f4f60e79-5ac6-4674-8caa-47ed30bb1862" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GameLabGame/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GameLabGame/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GameLabGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GameLabGame/.idea/workspace.xml" afterDir="false" />
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/Assets/Materials/Mat_Plants.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Mat_Plants.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Shaders/SHAD_Textured.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/SHAD_Textured.shader" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TerrainData_3887a8c7-46ac-4450-9d60-0a320677aba7.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TerrainData_3887a8c7-46ac-4450-9d60-0a320677aba7.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TerrainData_f6f4071f-b466-4379-8e06-9d02ca7edf56.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TerrainData_f6f4071f-b466-4379-8e06-9d02ca7edf56.asset" afterDir="false" />
+=======
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,8 +104,12 @@
       <workItem from="1652204146199" duration="11515000" />
       <workItem from="1652377217989" duration="6449000" />
       <workItem from="1652466820705" duration="304000" />
+<<<<<<< Updated upstream
       <workItem from="1652467451689" duration="3622000" />
       <workItem from="1652833727574" duration="502000" />
+=======
+      <workItem from="1652467451689" duration="4622000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
