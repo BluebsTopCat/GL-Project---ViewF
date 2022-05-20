@@ -19,9 +19,9 @@ public class Player : MonoBehaviour
     [Header("Camera")] 
     public bool ineditor;
     public bool incamera;
-    public GameObject cameraObject;
-    public GameObject cameracam;
+    public Animator caminator;
     public float playercammult;
+    public GameObject disablecamera;
     public GameObject photocanvas;
 
     [Header("Dialogue")] 
@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
             
             rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(0, 0f, 0),.5f);
             anim.SetFloat("Speed", 0);
-            cameraObject.SetActive(false);
+            caminator.SetBool("Up", false);
             return;
         }
         
@@ -172,13 +172,22 @@ public class Player : MonoBehaviour
     void CameraFunctions()
     {
         incamera = Input.GetMouseButton(1);
-        cameraObject.SetActive(incamera);
+        caminator.SetBool("Up", incamera);
+        disablecamera.SetActive(incamera);
         if (incamera && Input.GetMouseButtonDown(0))
         {
-            ineditor = true;
-            photocanvas.SetActive(true);
+            caminator.SetTrigger("Snap");
+            StartCoroutine(snapped());
+
         }
-}
+    }
+
+    public IEnumerator snapped()
+    {
+        yield return new WaitForSeconds(.15f);
+        ineditor = true;
+        photocanvas.SetActive(true);
+    }
 
     void Interact()
     {

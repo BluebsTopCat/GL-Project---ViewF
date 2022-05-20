@@ -9,7 +9,8 @@ using UnityEngine.UI;
 
 public class PhotoCanvas : MonoBehaviour
 {
-    public VolumeProfile vp;
+    public Volume vol;
+    private VolumeProfile vp;
     private Bloom b;
     private ChromaticAberration ca;
     private DepthOfField dof;
@@ -20,6 +21,7 @@ public class PhotoCanvas : MonoBehaviour
     public RawImage i;
     public Camera c;
     public Material mr;
+    public Animator caminator;
     public int FileCounter = 0;
 
     WaitForEndOfFrame frameEnd = new WaitForEndOfFrame();
@@ -31,8 +33,16 @@ public class PhotoCanvas : MonoBehaviour
         i.texture = rt;
         c.targetTexture = rt;
         mr.mainTexture = rt;
+        vp = new VolumeProfile();
+        vol.profile = vp;
+        vp.Add<ChromaticAberration>();
+        vp.Add<Bloom>();
+        vp.Add<DepthOfField>();
+        vp.Add<Vignette>();
+        vp.Add<ColorAdjustments>();
         vp.TryGet(out ca);
         vp.TryGet(out b);
+        
         vp.TryGet(out dof);
         vp.TryGet(out v);
         vp.TryGet(out coa);
@@ -41,6 +51,8 @@ public class PhotoCanvas : MonoBehaviour
     public void dofon(bool b)
     {
         dof.active = b;
+        dof.mode.value = DepthOfFieldMode.Bokeh;
+        dof.SetAllOverridesTo(b);
     }
 
     public void dofdist(float f)
@@ -56,6 +68,7 @@ public class PhotoCanvas : MonoBehaviour
     public void bloomon(bool bl)
     {
         b.active = bl;
+        b.SetAllOverridesTo(bl);
     }
 
     public void bloomstr(float bs)
@@ -71,6 +84,7 @@ public class PhotoCanvas : MonoBehaviour
     public void caon(bool cao)
     {
         ca.active = cao;
+        ca.SetAllOverridesTo(cao);
     }
 
     public void castr(float st)
@@ -81,6 +95,7 @@ public class PhotoCanvas : MonoBehaviour
     public void vignon(bool von)
     {
         v.active = von;
+        v.SetAllOverridesTo(von);
     }
 
     public void vigstr(float vstr)
@@ -96,6 +111,7 @@ public class PhotoCanvas : MonoBehaviour
     public void coaon(bool coo)
     {
         coa.active = coo;
+        coa.SetAllOverridesTo(coo);
     }
 
     public void contrast(float con)
@@ -116,6 +132,16 @@ public class PhotoCanvas : MonoBehaviour
     public void hueshift(float hsh)
     {
         coa.hueShift.value = hsh;
+    }
+
+    public void rotation(float rot)
+    {
+        c.transform.localEulerAngles = new Vector3(90,0,rot);
+    }
+
+    public void fov(float fo)
+    {
+        c.fieldOfView = fo;
     }
 
     public void saveimage()
@@ -139,12 +165,16 @@ public class PhotoCanvas : MonoBehaviour
         while (File.Exists(path + "Photo" + FileCounter + ".png"))
             FileCounter++;
         File.WriteAllBytes( path + "Photo" + FileCounter + ".png", Bytes);
-        p.playerCurrently = Player.Playerstate.Walking;
-        p.ineditor = false;
+        caminator.SetTrigger("Print");
+        cancel(false);
     }
 
-    public void cancel()
+    public void cancel(bool b)
     {
+        if(b) caminator.SetTrigger("Cancel");
+        
+        c.transform.localEulerAngles = new Vector3(90,0,0);
+        c.fieldOfView = 60;
         p.playerCurrently = Player.Playerstate.Walking;
         p.ineditor = false;
     }
