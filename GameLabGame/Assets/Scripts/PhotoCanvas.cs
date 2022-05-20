@@ -23,6 +23,7 @@ public class PhotoCanvas : MonoBehaviour
     public Material mr;
     public Animator caminator;
     public int FileCounter = 0;
+    public Soundeffectscamera sec;
 
     WaitForEndOfFrame frameEnd = new WaitForEndOfFrame();
 
@@ -53,58 +54,69 @@ public class PhotoCanvas : MonoBehaviour
         dof.active = b;
         dof.mode.value = DepthOfFieldMode.Bokeh;
         dof.SetAllOverridesTo(b);
+        sec.playbeep();
     }
 
     public void dofdist(float f)
     {
         dof.focusDistance.value = f;
+        sec.playbeep();
     }
 
     public void dofstr(float st)
     {
         dof.focalLength.value = st;
+        sec.playbeep();
     }
 
     public void bloomon(bool bl)
     {
         b.active = bl;
         b.SetAllOverridesTo(bl);
+        sec.playbeep();
     }
 
     public void bloomstr(float bs)
     {
         b.intensity.value = bs;
+        sec.playbeep();
     }
 
     public void bloomthreth(float bt)
     {
         b.threshold.value = bt;
+        sec.playbeep();
     }
 
     public void caon(bool cao)
     {
         ca.active = cao;
         ca.SetAllOverridesTo(cao);
+        sec.playbeep();
     }
 
     public void castr(float st)
     {
         ca.intensity.value = st;
+        sec.playbeep();
     }
 
     public void vignon(bool von)
     {
         v.active = von;
         v.SetAllOverridesTo(von);
+        sec.playbeep();
     }
 
     public void vigstr(float vstr)
     {
         v.intensity.value = vstr;
+        sec.playbeep();
     }
     public void vigsmt(float vsmt)
     {
         v.smoothness.value = vsmt;
+        sec.playbeep();
     }
 
 
@@ -112,46 +124,54 @@ public class PhotoCanvas : MonoBehaviour
     {
         coa.active = coo;
         coa.SetAllOverridesTo(coo);
+        sec.playbeep();
     }
 
     public void contrast(float con)
     {
         coa.contrast.value = con;
+        sec.playbeep();
     }
 
     public void saturation(float sat)
     {
         coa.saturation.value = sat;
+        sec.playbeep();
     }
 
     public void exposure(float exp)
     {
         coa.postExposure.value = exp;
+        sec.playbeep();
     }
 
     public void hueshift(float hsh)
     {
         coa.hueShift.value = hsh;
+        sec.playbeep();
     }
 
     public void rotation(float rot)
     {
         c.transform.localEulerAngles = new Vector3(90,0,rot);
+        sec.playbeep();
     }
 
     public void fov(float fo)
     {
         c.fieldOfView = fo;
+        sec.playbeep();
     }
 
     public void saveimage()
     {
         StartCoroutine(saveie());
-
+        
     }
 
     IEnumerator saveie()
     {
+        sec.playbeep();
         yield return frameEnd;
         RenderTexture.active = rt;
         Texture2D tex = new Texture2D(Screen.width, Screen.height, TextureFormat.RGBA32, false);
@@ -171,7 +191,11 @@ public class PhotoCanvas : MonoBehaviour
 
     public void cancel(bool b)
     {
-        if(b) caminator.SetTrigger("Cancel");
+        if (b)
+        {
+            sec.playbeep();
+            caminator.SetTrigger("Cancel");
+        }
         
         c.transform.localEulerAngles = new Vector3(90,0,0);
         c.fieldOfView = 60;

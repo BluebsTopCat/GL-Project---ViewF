@@ -7,6 +7,7 @@ public class MenuCycler : MonoBehaviour
 {
     public int currentmenu = 0;
 
+    public Soundeffectscamera sec;
     public GameObject[] menus;
 
     // Update is called once per frame
@@ -18,6 +19,7 @@ public class MenuCycler : MonoBehaviour
     public void menuup()
     {
         currentmenu++;
+        sec.playbeep();
         if (currentmenu > menus.Length - 1)
         {
             currentmenu = 0;
@@ -28,6 +30,7 @@ public class MenuCycler : MonoBehaviour
     public void menudown()
     {
         currentmenu--;
+        sec.playbeep();
         if (currentmenu < 0)
         {
             currentmenu = menus.Length - 1;

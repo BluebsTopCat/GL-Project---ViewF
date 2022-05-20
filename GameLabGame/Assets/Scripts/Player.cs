@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
@@ -56,6 +57,13 @@ public class Player : MonoBehaviour
     private RaycastHit ground;
     public Boolean grounded;
     public Boolean inadjustrange;
+
+    [Header("Sound")] 
+    public AudioSource camerasfx;
+    public AudioClip shutter;
+    public AudioClip print;
+    public AudioSource stepsfx;
+    public AudioClip[] steps;
 
     // Start is called before the first frame update
     void Start()
@@ -123,7 +131,21 @@ public class Player : MonoBehaviour
         
         
         
-        timefalling = grounded || (inadjustrange && !jumping) ? 0 : timefalling + Time.deltaTime;
+        if (grounded)
+        {
+            if (timefalling > .5f)
+            {
+                stepsfx.pitch = Random.Range(.6f, .8f);
+                stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);;
+            }
+
+            timefalling = 0;
+        }
+        else
+        {
+            timefalling += Time.deltaTime;
+        }
+        
         if (grounded || (inadjustrange && !jumping))
         {
             sprinting = Input.GetKey(KeyCode.LeftShift);
@@ -177,14 +199,11 @@ public class Player : MonoBehaviour
         if (incamera && Input.GetMouseButtonDown(0))
         {
             caminator.SetTrigger("Snap");
-            StartCoroutine(snapped());
-
         }
     }
 
-    public IEnumerator snapped()
+    public void snapped()
     {
-        yield return new WaitForSeconds(.15f);
         ineditor = true;
         photocanvas.SetActive(true);
     }
@@ -202,6 +221,8 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
+        stepsfx.pitch = Random.Range(.6f, .8f);
+        stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);;
         this.transform.position += Vector3.up * .25f ;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(jumpstr * Vector3.up, ForceMode.Impulse);
@@ -216,6 +237,12 @@ public class Player : MonoBehaviour
             );
     }
 
+    public void step(AnimationEvent ae)
+    {
+        if (!inadjustrange || ae.animatorClipInfo.weight < .5f) return;
+        stepsfx.pitch = Random.Range(1f, 1.4f);
+        stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);
+    }
     Vector3 relativize(Vector3 input)
     {
         return this.transform.TransformVector(input);
