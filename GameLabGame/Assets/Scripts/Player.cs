@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private Menu m;
     [HideInInspector]
     public Vector3 lastvalidpos;
+    private Vector3 lastplacetouchingground;
     [Header("Camera")] 
     public bool ineditor;
     public bool incamera;
@@ -70,9 +71,11 @@ public class Player : MonoBehaviour
     public AudioSource stepsfx;
     public AudioClip[] steps;
 
+    private float startrot;
     // Start is called before the first frame update
     void Start()
     {
+        startrot = this.transform.rotation.y;
         m = GameObject.FindObjectOfType<Menu>();
         rb = this.GetComponent<Rigidbody>();
         dr = GameObject.FindObjectOfType<DialogueRunner>();
@@ -124,6 +127,10 @@ public class Player : MonoBehaviour
         inadjustrange = Physics.Raycast(transform.position, Vector3.down,out ground, groundheight * 1.25f, groundlm);
         grounded = Vector3.Distance(ground.point, transform.position) <= groundheight +.01f;
         
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            m.pausegame();
+        }
 
         if (grounded || rb.velocity.y <= 0)
             jumping = false;
@@ -144,12 +151,13 @@ public class Player : MonoBehaviour
 
         if (grounded || (inadjustrange && !jumping))
         {
-            if (timefalling > .5f && timefalling < 1.5f)
+            if (timefalling > .5f )  
             {
                 stepsfx.pitch = Random.Range(.6f, .8f);
                 stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);;
             }
-            else if (timefalling > 1f && rb.velocity.y < -30f)
+            
+            if (lastplacetouchingground.y - transform.position.y >8)
             {
                 cansetrespawn = false;
                 m.outofbounds(Menu.oobtype.Fall);
@@ -163,6 +171,7 @@ public class Player : MonoBehaviour
                 Jump();
             }
             adjusty();
+            lastplacetouchingground = this.transform.position;
         }
         else
         {
@@ -189,7 +198,7 @@ public class Player : MonoBehaviour
         //CameraRotation
         rotx += Input.GetAxis("Mouse X");
         roty = Mathf.Clamp(roty - Input.GetAxis("Mouse Y"), -70, 70);
-        this.transform.eulerAngles = new Vector3(0f, rotx, 0f);
+        this.transform.eulerAngles = new Vector3(0f, rotx + 90, 0f);
         cam.transform.localEulerAngles = new Vector3(roty, 0f, 0f);
 
         Debug.DrawRay(cam.transform.position, cam.transform.forward);
@@ -254,6 +263,9 @@ public class Player : MonoBehaviour
 
     public void drown()
     {
+        if (pause) return;
+        pause = true;
+        cansetrespawn = false;
         m.outofbounds(Menu.oobtype.Water);
     }
 

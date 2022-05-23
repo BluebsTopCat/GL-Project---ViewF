@@ -83,7 +83,6 @@ public class ContextMusic : MonoBehaviour
             {
                 if (b.c.bounds.Contains(player.transform.position))
                 {
-                    Debug.Log("Playerinthere");
                     b.audio.volume = b.falloff.Evaluate(0) * inmutezone;
                 }
                 else

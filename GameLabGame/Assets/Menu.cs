@@ -19,12 +19,33 @@ public class Menu : MonoBehaviour
     public AudioSource ads;
     public AudioClip fallclip;
     public AudioClip waterclip;
+
+    public GameObject pausescreen;
     // Start is called before the first frame update
     void Start()
     {
         p = GameObject.FindObjectOfType<Player>();
     }
 
+    public void back()
+    {
+        Time.timeScale = 1;
+        pausescreen.SetActive(false);
+        p.pause = false;
+    }
+
+    public void pausegame()
+    {
+        Time.timeScale = 0;
+        pausescreen.SetActive(true);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        p.pause = true;
+    }
+    public void quit()
+    {
+        Application.Quit();
+    }
     // Update is called once per frame
     public void outofbounds(oobtype ob)
     {
