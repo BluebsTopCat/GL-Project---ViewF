@@ -184,12 +184,12 @@ TextureImporter:
       name: directions2_2
       rect:
         serializedVersion: 2
-        x: 4
-        y: 6
-        width: 25
-        height: 13
+        x: 10
+        y: 4
+        width: 46
+        height: 5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,27 +197,6 @@ TextureImporter:
       bones: []
       spriteID: 92559492b44b61fe0800000000000000
       internalID: -1218588414248921815
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: directions2_3
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 7
-        width: 25
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: af8034b3f51711dd0800000000000000
-      internalID: -2517106062893315846
       vertices: []
       indices: 
       edges: []

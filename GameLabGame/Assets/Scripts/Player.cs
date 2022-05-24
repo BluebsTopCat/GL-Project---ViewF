@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using Yarn.Unity;
 using Random = UnityEngine.Random;
@@ -72,11 +69,16 @@ public class Player : MonoBehaviour
     public AudioClip[] steps;
 
     private float startrot;
+
+    private float crouching;
+
+    private CapsuleCollider cld;
     // Start is called before the first frame update
     void Start()
     {
         startrot = this.transform.rotation.y;
         m = GameObject.FindObjectOfType<Menu>();
+        cld = this.GetComponent<CapsuleCollider>();
         rb = this.GetComponent<Rigidbody>();
         dr = GameObject.FindObjectOfType<DialogueRunner>();
         dui = GameObject.FindObjectOfType<DialogueUI>();
@@ -121,11 +123,13 @@ public class Player : MonoBehaviour
             return;
         }
 
+        crouching = Input.GetKey(KeyCode.LeftControl)? .5f : 0f;
+        cld.height = 2 - crouching * 2;
         photocanvas.SetActive(false);
         Time.timeScale = 1;
         rb.isKinematic = false;
-        inadjustrange = Physics.Raycast(transform.position, Vector3.down,out ground, groundheight * 1.25f, groundlm);
-        grounded = Vector3.Distance(ground.point, transform.position) <= groundheight +.01f;
+        inadjustrange = Physics.Raycast(transform.position + Vector3.up * crouching, Vector3.down,out ground, groundheight * 1.25f, groundlm);
+        grounded = Vector3.Distance(ground.point, transform.position + Vector3.up * crouching) <= groundheight +.01f;
         
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -170,6 +174,7 @@ public class Player : MonoBehaviour
             {
                 Jump();
             }
+            
             adjusty();
             lastplacetouchingground = this.transform.position;
         }
@@ -192,6 +197,7 @@ public class Player : MonoBehaviour
         //Speed up player if sprinting
         inputs = sprinting ? inputs * sprintmultiplier : inputs;
         inputs = incamera ? inputs * playercammult : inputs;
+        inputs *= (1 - crouching);
         Vector3 newvelocity = relativize(new Vector3(inputs.x * speed, rb.velocity.y, inputs.y * speed));
         rb.velocity = Vector3.Lerp(rb.velocity, newvelocity, !grounded || jumping ? .05f : .25f);
         
@@ -236,7 +242,12 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Interacted!");
         RaycastHit hit;
-        if (Physics.Raycast(new Ray(cam.transform.position, cam.transform.forward), out hit, InteractLength, NPCMASK))
+        if (Physics.Raycast(new Ray(cam.transform.position, cam.transform.forward), out hit, InteractLength, NPCMASK) &&
+            hit.transform.gameObject.CompareTag("Finish"))
+        {
+            m.startend();
+        }
+        else if (Physics.Raycast(new Ray(cam.transform.position, cam.transform.forward), out hit, InteractLength, NPCMASK))
         {
             string dialogue = hit.transform.gameObject.GetComponent<NPC>().Interact();
             dr.StartDialogue(dialogue);
@@ -246,15 +257,15 @@ public class Player : MonoBehaviour
     void Jump()
     {
         stepsfx.pitch = Random.Range(.6f, .8f);
-        stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);;
-        this.transform.position += Vector3.up * .25f ;
+        stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);
+        this.transform.position += Vector3.up * .25f;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(jumpstr * Vector3.up, ForceMode.Impulse);
         jumping = true;
     }
     void adjusty()
     {
-        float difference = (this.transform.position.y - groundheight) - ground.point.y;
+        float difference = (this.transform.position.y + crouching - groundheight) - ground.point.y;
         rb.velocity = new Vector3(rb.velocity.x,
             Mathf.Lerp(rb.velocity.y, -(yadjstr * difference * Mathf.Abs(difference)), .5f),
             rb.velocity.z

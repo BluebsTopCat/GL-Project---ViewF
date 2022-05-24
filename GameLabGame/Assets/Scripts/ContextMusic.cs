@@ -11,6 +11,7 @@ public class ContextMusic : MonoBehaviour
     public float inmutezone = 0; 
 
     public bool show;
+    public float mutedmanual = 0;
 
     private List<musicbit> muted;
     private List<musicbit> unmuted;
@@ -68,13 +69,13 @@ public class ContextMusic : MonoBehaviour
                         player.transform.position));
                 }
 
-                inmutezone = 1 - Mathf.Clamp(subt, 0, 1);
+                inmutezone = 1 - Mathf.Clamp(subt, 0, 1)- mutedmanual;
 
             }
         }
         else
         {
-            inmutezone = 1;
+            inmutezone = 1 - mutedmanual;
         }
 
         foreach (musicbit b in unmuted)

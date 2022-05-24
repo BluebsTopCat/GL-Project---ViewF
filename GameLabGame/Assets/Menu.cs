@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -21,10 +23,21 @@ public class Menu : MonoBehaviour
     public AudioClip waterclip;
 
     public GameObject pausescreen;
+
+    public GameObject endscreen;
     // Start is called before the first frame update
     void Start()
     {
         p = GameObject.FindObjectOfType<Player>();
+    }
+
+    public void startend()
+    {
+        Time.timeScale = 0;
+        endscreen.SetActive(true);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        p.pause = true;
     }
 
     public void back()
@@ -44,7 +57,7 @@ public class Menu : MonoBehaviour
     }
     public void quit()
     {
-        Application.Quit();
+        SceneManager.LoadScene(0);
     }
     // Update is called once per frame
     public void outofbounds(oobtype ob)
@@ -79,4 +92,5 @@ public class Menu : MonoBehaviour
         p.cansetrespawn = true;
         p.pause = false;
     }
+    
 }

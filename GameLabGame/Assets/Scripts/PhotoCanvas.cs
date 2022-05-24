@@ -24,7 +24,7 @@ public class PhotoCanvas : MonoBehaviour
     public Animator caminator;
     public int FileCounter = 0;
     public Soundeffectscamera sec;
-
+    private ImageStorage imgs;
     WaitForEndOfFrame frameEnd = new WaitForEndOfFrame();
 
     // Start is called before the first frame update
@@ -47,6 +47,7 @@ public class PhotoCanvas : MonoBehaviour
         vp.TryGet(out dof);
         vp.TryGet(out v);
         vp.TryGet(out coa);
+        imgs = GameObject.FindObjectOfType<ImageStorage>();
     }
 
     public void dofon(bool b)
@@ -177,14 +178,13 @@ public class PhotoCanvas : MonoBehaviour
         Texture2D tex = new Texture2D(Screen.width, Screen.height, TextureFormat.RGBA32, false);
         tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         tex.Apply();
-        var Bytes = tex.EncodeToPNG();
-        Destroy(tex);
-        string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +"/";
+        imgs.photos.Add(tex);
+        /*string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +"/";
         path = path.Replace('\\','/');
         Debug.Log(path);
         while (File.Exists(path + "Photo" + FileCounter + ".png"))
             FileCounter++;
-        File.WriteAllBytes( path + "Photo" + FileCounter + ".png", Bytes);
+        File.WriteAllBytes( path + "Photo" + FileCounter + ".png", Bytes);*/
         caminator.SetTrigger("Print");
         cancel(false);
     }
