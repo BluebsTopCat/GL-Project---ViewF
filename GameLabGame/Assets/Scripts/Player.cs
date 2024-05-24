@@ -191,23 +191,30 @@ public class Player : MonoBehaviour
             updatelastpos();
         }
 
-        //Move player relative to inputs
-        Vector2 inputs = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        
-        //Speed up player if sprinting
-        inputs = sprinting ? inputs * sprintmultiplier : inputs;
-        inputs = incamera ? inputs * playercammult : inputs;
-        inputs *= (1 - crouching);
-        Vector3 newvelocity = relativize(new Vector3(inputs.x * speed, rb.velocity.y, inputs.y * speed));
-        rb.velocity = Vector3.Lerp(rb.velocity, newvelocity, !grounded || jumping ? .05f : .25f);
-        
+       
         //CameraRotation
         rotx += Input.GetAxis("Mouse X");
         roty = Mathf.Clamp(roty - Input.GetAxis("Mouse Y"), -70, 70);
         this.transform.eulerAngles = new Vector3(0f, rotx + 90, 0f);
         cam.transform.localEulerAngles = new Vector3(roty, 0f, 0f);
 
+        //Move player relative to inputs
+        Vector2 inputs = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        
+        inputs = sprinting ? inputs * sprintmultiplier : inputs;
+        inputs = incamera ? inputs * playercammult : inputs;
+        inputs *= (1 - crouching);
+        
+        Vector3 forwardVel = transform.forward * (inputs.y * speed);
+        Vector3 rightVel = transform.right * (inputs.x * speed);
+        Vector3 upVel = Vector3.up * rb.velocity.y;
+        Vector3 newVel= forwardVel + upVel + rightVel;
+        
+        rb.velocity = Vector3.Lerp(rb.velocity, newVel, !grounded || jumping ? .05f : .25f);
+
+        
         Debug.DrawRay(cam.transform.position, cam.transform.forward);
+        
         if (Input.GetKeyDown(KeyCode.E))
             Interact();
         
@@ -286,10 +293,7 @@ public class Player : MonoBehaviour
         stepsfx.pitch = Random.Range(1f, 1.4f);
         stepsfx.PlayOneShot(steps[Random.Range(0, steps.Length - 1)]);
     }
-    Vector3 relativize(Vector3 input)
-    {
-        return this.transform.TransformVector(input);
-    }
+    
 
     public void respawn()
     {
