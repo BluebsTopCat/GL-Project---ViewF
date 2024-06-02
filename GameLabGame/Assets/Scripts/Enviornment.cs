@@ -16,6 +16,7 @@ public class Enviornment : MonoBehaviour
 
     public float CloudSpeedMult = .05f;
 
+    public Vector3 windSpeed;
     Vector2 cloudAcc;
     Vector2 cloudPos;
     Vector2 cloudVel;
@@ -42,10 +43,11 @@ public class Enviornment : MonoBehaviour
         Shader.SetGlobalColor("Sky_Top", skyTop);
         Shader.SetGlobalColor("Sky_Bot", LowGrad.Evaluate(standardTime/24));
         Shader.SetGlobalFloat("Time", standardTime);
-        Shader.SetGlobalFloat("CloudCover", RandBetween(0,1, GlobalTime, .1f));
+        Shader.SetGlobalFloat("CloudCover", RandBetween(0, 1, GlobalTime, .1f));
         Shader.SetGlobalFloat("CloudColorStr", CloudColorStr);
         Shader.SetGlobalColor("CloudColor", Cloud_Color);
         Shader.SetGlobalVector("CloudPos", cloudPos);
+        Shader.SetGlobalVector("WindDir", windSpeed);
         Sun.color = skyTop;
         float sunRot = -90 + 360 * (standardTime / 24);
         Sun.transform.eulerAngles = new Vector3(sunRot, 0f, 0f);
@@ -77,5 +79,10 @@ public class Enviornment : MonoBehaviour
         float pi = MathF.PI;
         float perlinintegral = (-Mathf.Cos(pi * speed * time)/pi - Mathf.Cos(2 * time * speed)/2) /2;
         return min + half + perlinintegral * half;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(Vector3.zero,  windSpeed);
     }
 }
