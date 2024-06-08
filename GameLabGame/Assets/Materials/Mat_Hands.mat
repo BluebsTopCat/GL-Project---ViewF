@@ -43,12 +43,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 2800000, guid: 129a22e9db3c8de449991c7bf869f443, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FSmooth:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 715bb6ffd79fdbe4d86b357e28cbbda2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -57,6 +61,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 75d9452e0a40c044881dbf06a4bcfe59, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -72,7 +80,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5794a9aa890cd8a43ac79a3dc6037cfb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -109,7 +117,7 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FSmoothTint: 0.5
-    - _FogDesnity: 1
+    - _FogDesnity: 0.01
     - _FogOffset: 1
     - _Fresnel: 0.186
     - _FresnelSmoothness: 1
@@ -135,7 +143,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 0.764151, g: 0.47120044, b: 0.2198736, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1615146885321180684
 MonoBehaviour:

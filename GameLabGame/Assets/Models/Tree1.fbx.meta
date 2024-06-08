@@ -3,7 +3,17 @@ guid: c6e71358f29f51a4aaf2166343bd8045
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: branch_1Mat
+    second: {fileID: 2100000, guid: bf2e311f3af1dff4b83a02e4f47bcda4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: textureplane_oaktiled_albedotransparency_0Mat
+    second: {fileID: 2100000, guid: f75b18133fb627541930a70adbfee404, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -90,7 +100,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.02
+    globalScale: 2
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

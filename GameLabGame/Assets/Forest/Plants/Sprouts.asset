@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38092ae0da387c43bfac1b4e0ce6636, type: 3}
+  m_Name: Sprouts
+  m_EditorClassIdentifier: 
+  meshVariants:
+  - {fileID: 5119288661493347300, guid: d523bf7441c26184983419cfb8dda093, type: 3}
+  - {fileID: 4410003703841199380, guid: 83d07852fbd2cac4f99e612aee9da997, type: 3}
+  size: 1
+  scaleVariation: {x: 0.8, y: 1.2}

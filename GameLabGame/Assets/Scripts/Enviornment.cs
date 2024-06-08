@@ -4,28 +4,30 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public class Enviornment : MonoBehaviour
 {
-    [Header("Testing Settings")]
-    public float speeditup = 1;
-    public float GlobalTime;
-    [Range(0,1)]
-    public float CloudColorStr = 0.446f;
+    [FormerlySerializedAs("MinutesPerDay")] [Header("Testing Settings")]
+    public float minutesPerDay = 10;
+    [FormerlySerializedAs("UpdatesPerMinute")] public int updatesPerDay = 10;
+    [FormerlySerializedAs("GlobalTime")] public float globalTime;
+    [FormerlySerializedAs("CloudColorStr")] [Range(0,1)]
+    public float cloudColorStr = 0.446f;
 
-    public float CloudSpeedMult = .05f;
+    [FormerlySerializedAs("CloudSpeedMult")] public float cloudSpeedMult = .05f;
 
     public Vector3 windSpeed;
-    Vector2 cloudAcc;
-    Vector2 cloudPos;
-    Vector2 cloudVel;
+    Vector2 _cloudAcc;
+    Vector2 _cloudPos;
+    Vector2 _cloudVel;
 
-    [Header("Properties")]
-    public Light Sun;
-    public Color Cloud_Color;
-    public Gradient LowGrad;
-    public Gradient HighGrad;
+    [FormerlySerializedAs("Sun")] [Header("Properties")]
+    public Light sun;
+    [FormerlySerializedAs("Cloud_Color")] public Color cloudColor;
+    [FormerlySerializedAs("LowGrad")] public Gradient lowGrad;
+    [FormerlySerializedAs("HighGrad")] public Gradient highGrad;
     
     // Start is called before the first frame update
 
@@ -34,35 +36,37 @@ public class Enviornment : MonoBehaviour
         UpdateShaders();
     }
 
-    void UpdateShaders()
+    private void Start()
     {
-        float standardTime = (GlobalTime % 24);
-        
-        Color skyTop = HighGrad.Evaluate(standardTime/ 24);
-        
-        Shader.SetGlobalColor("Sky_Top", skyTop);
-        Shader.SetGlobalColor("Sky_Bot", LowGrad.Evaluate(standardTime/24));
-        Shader.SetGlobalFloat("Time", standardTime);
-        Shader.SetGlobalFloat("CloudCover", RandBetween(0, 1, GlobalTime, .1f));
-        Shader.SetGlobalFloat("CloudColorStr", CloudColorStr);
-        Shader.SetGlobalColor("CloudColor", Cloud_Color);
-        Shader.SetGlobalVector("CloudPos", cloudPos);
-        Shader.SetGlobalVector("WindDir", windSpeed);
-        Sun.color = skyTop;
-        float sunRot = -90 + 360 * (standardTime / 24);
-        Sun.transform.eulerAngles = new Vector3(sunRot, 0f, 0f);
+        InvokeRepeating(nameof(UpdateSkyBox),0f, 60f * minutesPerDay/updatesPerDay);
     }
 
-
-    // Update is called once per frame
-    void Update()
+    void UpdateShaders()
     {
-        GlobalTime += UnityEngine.Time.deltaTime * speeditup;
+        float standardTime = (globalTime % 24);
         
-        cloudAcc.x = RandBetween(-1, 1, GlobalTime, .1f);
-        cloudAcc.y = RandBetween(-1, 1, GlobalTime + 50, .1f);
-        cloudVel += new Vector2(cloudAcc.x * Time.deltaTime, cloudAcc.y * Time.deltaTime);
-        cloudPos += cloudVel * (Time.deltaTime * CloudSpeedMult);
+        Color skyTop = highGrad.Evaluate(standardTime/ 24);
+        
+        Shader.SetGlobalColor("Sky_Top", skyTop);
+        Shader.SetGlobalColor("Sky_Bot", lowGrad.Evaluate(standardTime/24));
+        Shader.SetGlobalFloat("Time", standardTime);
+        Shader.SetGlobalFloat("CloudCover", RandBetween(0, 1, globalTime, .1f));
+        Shader.SetGlobalFloat("CloudColorStr", cloudColorStr);
+        Shader.SetGlobalColor("CloudColor", cloudColor);
+        Shader.SetGlobalVector("CloudPos", _cloudPos);
+        Shader.SetGlobalVector("WindDir", windSpeed);
+        sun.color = skyTop;
+        float sunRot = -90 + 360 * (standardTime / 24);
+        sun.transform.eulerAngles = new Vector3(sunRot, 0f, 0f);
+    }
+
+    void UpdateSkyBox()
+    {
+        globalTime +=   24f / ( updatesPerDay * minutesPerDay);
+        _cloudAcc.x = RandBetween(-1, 1, globalTime, .1f);
+        _cloudAcc.y = RandBetween(-1, 1, globalTime + 50, .1f);
+        _cloudVel += new Vector2(_cloudAcc.x * Time.deltaTime, _cloudAcc.y * Time.deltaTime);
+        _cloudPos += _cloudVel * (Time.deltaTime * cloudSpeedMult);
         UpdateShaders();
     }
 
